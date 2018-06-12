@@ -4,5 +4,5 @@ export default {
   authors: [],
   courses: [],
   ajaxCallsInProgress: 0,
-  pipes: []
+  pipes: [123]
 };

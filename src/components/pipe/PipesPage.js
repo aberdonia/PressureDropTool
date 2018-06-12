@@ -4,8 +4,9 @@ import PipeRow from '../pipe/PipeRow';
 import AddPipeRow from "../pipe/AddPipeRow";
 import PipeList from "./PipeList";
 import {connect} from "react-redux";
-import * as courseActions from "../../actions/courseAction";
+import * as pipeActions from "../../actions/pipeActions";
 import {bindActionCreators} from "redux";
+import TextInput from "../common/TextInput";
 
 class PipesPage extends React.Component {
   constructor(props, context) {
@@ -20,10 +21,48 @@ class PipesPage extends React.Component {
       <div>
         ${pipes}
         <PipeList/>
+        <div className={"form-group row"}>
+          <TextInput
+            name="title"
+            label="Title"
+            value={""}
+            error={"ddd"}/>
+          <TextInput
+            name="title"
+            label="Title"
+            value={""}
+            error={"ddd"}/>
+          <TextInput
+            name="title"
+            label="Title"
+            value={"dd"}
+            error={"ddd"}/>
+          <TextInput
+            name="title"
+            label="Title"
+            value={"dd"}
+            error={"ddd"}/>
+          <TextInput
+            name="title"
+            label="Title"
+            value={"dd"}
+            error={"ddd"}/>
+          <TextInput
+            name="title"
+            label="Title"
+            value={"dd"}
+            error={"ddd"}/>
+
+          <input type="submit"
+                 value={"Add Pipe"}
+                 className={"btn btn-primary"}
+                 onClick={this.redirectToAddCoursePage}/>
+        </div>
       </div>
     );
   }
 }
+
 //
 // CourseListRow.propTypes = {
 //   course: PropTypes.object.isRequired
@@ -34,7 +73,7 @@ PipesPage.propTypes = {
   pipes: PropTypes.array.isRequired
 };
 
-function mapStateToProps(state, ownProps){
+function mapStateToProps(state, ownProps) {
   return {
     // defined in index.js reducers
     pipes: state.pipes
@@ -43,10 +82,9 @@ function mapStateToProps(state, ownProps){
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(courseActions, dispatch)
+    actions: bindActionCreators(pipeActions, dispatch)
   };
 }
-
 
 
 export default connect(mapStateToProps)(PipesPage);
