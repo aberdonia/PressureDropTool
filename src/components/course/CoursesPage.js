@@ -43,7 +43,7 @@ CoursesPage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    // definted in index.js reducers
+    // defined in index.js reducers
     courses: state.courses
   };
 }

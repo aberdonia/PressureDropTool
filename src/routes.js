@@ -4,8 +4,8 @@ import App from './components/App';
 import HomePage from './components/home/HomePage';
 import AboutPage from './components/about/AboutPage';
 import CoursesPage from './components/course/CoursesPage';
-import ManageCoursesPage from './components/course/ManageCoursePage'
-import PipeManager from './components/pipe/PipeManager'
+import ManageCoursesPage from './components/course/ManageCoursePage';
+import PipesPage from './components/pipe/PipesPage';
 
 export default (
   <Route path="/" component={App}>
@@ -14,6 +14,6 @@ export default (
     <Route path="course" component={ManageCoursesPage} />
     <Route path="course/:id" component={ManageCoursesPage} />
     <Route path="about" component={AboutPage} />
-    <Route path="pipes" component={PipeManager} />
+    <Route path="pipes" component={PipesPage} />
   </Route>
 );
