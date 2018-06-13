@@ -1,3 +1,10 @@
+#TODO
+* Add rows to pipe page
+* Edit row on pipe page
+* Calculate Pd
+* Return and display Pd
+
+
 # Starter Kit for [Building Applications in React and Redux in ES6](http://www.pluralsight.com/author/cory-house) on Pluralsight
 
 ## Get Started

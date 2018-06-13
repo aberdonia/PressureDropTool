@@ -4,5 +4,6 @@ export default {
   authors: [],
   courses: [],
   ajaxCallsInProgress: 0,
-  pipes: [123]
+  pipes: [123],
+  parameters: ["Section No.","Description","Horizontal Change (m)","Vertical Change (m)","ID (mm)","Roughness (mm)","Cores"]
 };

@@ -2,7 +2,7 @@ import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
 // using default params here
-export default function courseReducer(state = initialState.pipes, action) {
+export default function pipeReducer(state = initialState.pipes, action) {
   switch (action.type) {
     case types.LOAD_PIPE_SUCCESS:
       return action.pipes;
@@ -10,13 +10,13 @@ export default function courseReducer(state = initialState.pipes, action) {
     case types.CREATE_PIPE_SUCCESS:
       return [
         ...state,
-        Object.assign({}, action.piprd)
+        Object.assign({}, action.pipe)
       ];
 
-    case types.UPDATE_COURSE_SUCCESS:
+    case types.UPDATE_PIPE_SUCCESS:
       return [
-        ...state.filter(course => course.id !== action.course.id),
-        Object.assign({}, action.course)
+        ...state.filter(pipe => pipe.id !== action.pipe.id),
+        Object.assign({}, action.pipe)
       ];
 
     default:

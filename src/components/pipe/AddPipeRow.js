@@ -1,20 +1,60 @@
 import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as courseActions from '../../actions/courseAction';
-import CourseForm from "../course/CourseForm";
-import toastr from 'toastr';
+import TextInput from "../common/TextInput";
 
-const AddPipeRow = ({course,errors,saving}) => {
-
+const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
   return (
-    <CourseForm
-      allAuthors="test"
-      course={this.course}
-      errors={this.errors}
-      saving={this.saving}
-    />
+<div>
+  <TextInput
+    name="description"
+    label="Description"
+    value={pipe.description}
+    onChange={onChange}
+    error={errors.description}/>
+  <TextInput
+    name="horizontal_change"
+    label="Horizontal Change"
+    value={pipe.horizontal}
+    onChange={onChange}
+    error={errors.horizontal}/>
+  <TextInput
+    name="vertical_change"
+    label="Vertical Change"
+    value={pipe.vertical}
+    onChange={onChange}
+    error={errors.vertical}/>
+  <TextInput
+    name="inner_diamter"
+    label="I.D."
+    value={pipe.inner_diamter}
+    onChange={onChange}
+    error={errors.inner_diamter}/>
+  <TextInput
+    name="roughness"
+    label="Roughness"
+    value={pipe.roughness}
+    onChange={onChange}
+    error={errors.roughness}/>
+  <TextInput
+    name="cores"
+    label="Cores"
+    value={pipe.cores}
+    onChange={onChange}
+    error={errors.cores}/>
+  <input type="submit"
+         value={"Add Pipe"}
+         className={"btn btn-primary"}
+         onClick={onSave}/>
+</div>
   );
+};
+
+// proptypes here should match those in declaration
+AddPipeRow.propTypes = {
+  pipe: PropTypes.object.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  saving: PropTypes.bool,
+  errors: PropTypes.object
 };
 
 
