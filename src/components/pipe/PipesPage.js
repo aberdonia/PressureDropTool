@@ -80,7 +80,7 @@ class PipesPage extends React.Component {
             )}
           </tr>
           </thead>
-          <PipeList/>
+          <PipeList pipes={pipes}/>
         </table>
         <div className={"form-group row"}>
           <AddPipeRow

@@ -1,12 +1,15 @@
 import React, {PropTypes} from 'react';
 import PipeRow from "./PipeRow";
 
-const PipeList = () => {
-  return (
+const PipeList = ({pipes}) => {
 
-      <tbody>
-      <PipeRow/>
-      </tbody>
+  return (
+    <tbody>
+    {pipes.map(pipe =>
+      <PipeRow key={pipes.indexOf(pipe)} index={pipes.indexOf(pipe)+1} pipe={pipe}/>
+    )}
+
+    </tbody>
   );
 };
 
