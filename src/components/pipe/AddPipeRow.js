@@ -13,15 +13,15 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
   <TextInput
     name="horizontal_change"
     label="Horizontal Change"
-    value={pipe.horizontal}
+    value={pipe.horizontal_change}
     onChange={onChange}
-    error={errors.horizontal}/>
+    error={errors.horizontal_change}/>
   <TextInput
     name="vertical_change"
     label="Vertical Change"
-    value={pipe.vertical}
+    value={pipe.vertical_change}
     onChange={onChange}
-    error={errors.vertical}/>
+    error={errors.vertical_change}/>
   <TextInput
     name="inner_diamter"
     label="I.D."

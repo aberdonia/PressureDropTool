@@ -27,8 +27,10 @@ class ManageCoursePage extends React.Component {
   // use this to update the state (see constrctor *). react life cycle function.
   // runs when react thinks function has changed (sometimes does it too much)
   componentWillReceiveProps(nextProps) {
+    debugger;
     // validate that the props have actually changed.
     if (this.props.course.id != nextProps.course.id) {
+      debugger;
       // Necessary to populate form when existing course is loaded directly.
       this.setState({course: Object.assign({}, nextProps.course)});
     }

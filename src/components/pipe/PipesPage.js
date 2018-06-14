@@ -23,10 +23,9 @@ class PipesPage extends React.Component {
       // use this saving state to indicate when button is pressed and api call getting carried out, provide better UI feedback
       // could use a reducer, but this is fleeting data that rest of app doesn't care about, so no point
       saving: false
-      // parameters:
     };
 
-    // to ensure we have proper 'this' context when updateCourseState is called
+    // to ensure we have proper 'this' context when updatePipeState is called
     this.updatePipeState = this.updatePipeState.bind(this);
     this.savePipe = this.savePipe.bind(this);
   }
@@ -34,20 +33,21 @@ class PipesPage extends React.Component {
   // use this to update the state (see constrctor *). react life cycle function.
   // runs when react thinks function has changed (sometimes does it too much)
   componentWillReceiveProps(nextProps) {
-
     // this.setState({pipe: Object.assign({}, nextProps.pipe)});
     // validate that the props have actually changed.
-    // if (this.props.pipe.id != nextProps.pipe.id) {
-    //   // Necessary to populate form when existing course is loaded directly.
-    //   this.setState({pipe: Object.assign({}, nextProps.pipe)});
-    // }
+    if (this.props != nextProps) {
+      // TODO: add duplicate validation this.props.pipe.description != nextProps.pipe.description
+      // Necessary to populate form when existing course is loaded directly.
+      console.log(nextProps);
+      debugger;
+      this.setState({pipe: Object.assign({}, nextProps.pipe)});
+    }
   }
 
   updatePipeState(event) {
     const field = event.target.name;
     let pipe = Object.assign({}, this.state.pipe);
     pipe[field] = event.target.value;
-    debugger;
     return this.setState({pipe: pipe});
   }
 
@@ -62,12 +62,18 @@ class PipesPage extends React.Component {
       });
   }
 
-  test() {
-    browserHistory.push('/course');
+  // use promise in saveCourse() to provide better UI. waits for api call to complete before changing page
+  redirect() {
+    this.setState({saving: false});
+    toastr.success('Pipe saved');
+    this.context.router.push('/pipes');
   }
 
   render() {
-    const {pipes} = this.props;
+    console.log(this.props);
+    console.log(this.state);
+
+    let {pipes} = this.props;
     const {parameters} = this.props;
 
     return (
@@ -86,7 +92,7 @@ class PipesPage extends React.Component {
           <AddPipeRow
             pipe={this.state.pipe}
             onChange={this.updatePipeState}
-            onSave={this.test}
+            onSave={this.savePipe}
             parameter={this.state.parameters}
             errors={this.state.errors}
           />
@@ -115,6 +121,8 @@ PipesPage.propTypes = {
 PipesPage.contextTypes = {
   router: PropTypes.object
 };
+
+
 
 
 function mapStateToProps(state, ownProps) {

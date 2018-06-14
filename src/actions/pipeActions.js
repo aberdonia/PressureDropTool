@@ -27,12 +27,10 @@ export function  loadPipes() {
   };
 }
 
-
 export function savePipe(pipe) {
   return function (dispatch, getState) {
     dispatch(beginAjaxCall());
     return pipesApi.savePipe(pipe).then(savedPipe => {
-      pipe.id ? dispatch(updatePipesSuccess(savedPipe)) :
         dispatch(createPipesSuccess(savedPipe));
     }).catch(error => {
       dispatch(ajaxCallError(error));
