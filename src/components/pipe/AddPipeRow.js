@@ -5,40 +5,46 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
   return (
 <div>
   <TextInput
-    name="description"
-    label="Description"
+    name={parameters[1].name}
+    label={parameters[1].label}
     value={pipe.description}
     onChange={onChange}
+    placeholder={parameters[1].label}
     error={errors.description}/>
   <TextInput
-    name="horizontal_change"
-    label="Horizontal Change"
+    name={parameters[2].name}
+    label={parameters[2].label}
     value={pipe.horizontal_change}
     onChange={onChange}
+    placeholder={parameters[2].label}
     error={errors.horizontal_change}/>
   <TextInput
-    name="vertical_change"
-    label="Vertical Change"
+    name={parameters[3].name}
+    label={parameters[3].label}
     value={pipe.vertical_change}
     onChange={onChange}
+    placeholder={parameters[3].label}
     error={errors.vertical_change}/>
   <TextInput
-    name="inner_diamter"
-    label="I.D."
+    name={parameters[4].name}
+    label={parameters[4].label}
     value={pipe.inner_diamter}
     onChange={onChange}
+    placeholder={parameters[4].label}
     error={errors.inner_diamter}/>
   <TextInput
-    name="roughness"
-    label="Roughness"
+    name={parameters[5].name}
+    label={parameters[5].label}
     value={pipe.roughness}
     onChange={onChange}
+    placeholder={parameters[5].label}
     error={errors.roughness}/>
   <TextInput
-    name="cores"
-    label="Cores"
+    name={parameters[6].name}
+    label={parameters[6].label}
     value={pipe.cores}
     onChange={onChange}
+    placeholder={parameters[6].label}
     error={errors.cores}/>
   <input type="submit"
          value={"Add Pipe"}

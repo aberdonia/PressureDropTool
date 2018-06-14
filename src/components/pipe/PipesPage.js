@@ -82,7 +82,7 @@ class PipesPage extends React.Component {
           <thead>
           <tr>
             {parameters.map((parameter) =>
-              <th key={parameter}> {parameter}</th>
+              <th key={parameter.header}> {parameter.header}</th>
             )}
           </tr>
           </thead>
@@ -93,7 +93,7 @@ class PipesPage extends React.Component {
             pipe={this.state.pipe}
             onChange={this.updatePipeState}
             onSave={this.savePipe}
-            parameter={this.state.parameters}
+            parameters={this.state.parameters}
             errors={this.state.errors}
           />
         </div>
