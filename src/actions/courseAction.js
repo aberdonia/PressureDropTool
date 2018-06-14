@@ -26,6 +26,7 @@ export function  loadCourses() {
 }
 
 export function saveCourse(course) {
+  debugger;
   return function (dispatch, getState) {
     dispatch(beginAjaxCall());
     return courseApi.saveCourse(course).then(savedCourse => {

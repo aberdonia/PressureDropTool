@@ -8,9 +8,10 @@ export default function pipeReducer(state = initialState.pipes, action) {
       return action.pipes;
 
     case types.CREATE_PIPE_SUCCESS:
+    debugger;
       return [
         ...state,
-        Object.assign({}, action.pipe)
+        Object.assign({}, action.pipes)
       ];
 
     case types.UPDATE_PIPE_SUCCESS:

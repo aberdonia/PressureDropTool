@@ -1,8 +1,6 @@
 import * as types from './actionTypes';
-import pipesApi from "../api/mockPipeApi";
+import pipeApi from "../api/mockPipeApi";
 import {ajaxCallError, beginAjaxCall} from "./ajaxStatusActions";
-import courseApi from "../api/mockCourseApi";
-import {createCourseSuccess, updateCourseSuccess} from "./courseAction";
 
 export function loadPipesSuccess(pipes) {
   return {type: types.LOAD_PIPE_SUCCESS, pipes};
@@ -19,7 +17,7 @@ export function updatePipesSuccess(pipes) {
 export function  loadPipes() {
   return function (dispatch) {
     dispatch(beginAjaxCall());
-    return pipesApi.getAllPipes().then(pipes => {
+    return pipeApi.getAllPipes().then(pipes => {
       dispatch(loadPipesSuccess(pipes));
     }).catch(error => {
       throw(error);
@@ -29,8 +27,9 @@ export function  loadPipes() {
 
 export function savePipe(pipe) {
   return function (dispatch, getState) {
+    debugger;
     dispatch(beginAjaxCall());
-    return pipesApi.savePipe(pipe).then(savedPipe => {
+    return pipeApi.savePipe(pipe).then(savedPipe => {
         dispatch(createPipesSuccess(savedPipe));
     }).catch(error => {
       dispatch(ajaxCallError(error));
