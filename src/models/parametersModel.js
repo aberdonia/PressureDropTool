@@ -32,6 +32,6 @@ const parameters = [{
     header: "Cores",
     name: "cores",
     label: "Cores"
-}]
+}];
 
 export default parameters;

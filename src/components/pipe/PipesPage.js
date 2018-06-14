@@ -8,6 +8,7 @@ import * as pipeActions from "../../actions/pipeActions";
 import {bindActionCreators} from "redux";
 import TextInput from "../common/TextInput";
 import toastr from "toastr";
+import ComputeApi from "../../api/mockComputationApi"
 
 class PipesPage extends React.Component {
   constructor(props, context) {
@@ -28,6 +29,8 @@ class PipesPage extends React.Component {
     // to ensure we have proper 'this' context when updatePipeState is called
     this.updatePipeState = this.updatePipeState.bind(this);
     this.savePipe = this.savePipe.bind(this);
+    // need this to locate props in onCompute function
+    this.onCompute = this.onCompute.bind(this);
   }
 
   // use this to update the state (see constrctor *). react life cycle function.
@@ -65,13 +68,20 @@ class PipesPage extends React.Component {
   // use promise in saveCourse() to provide better UI. waits for api call to complete before changing page
   redirect() {
     this.setState({saving: false});
-    toastr.success('Pipe saved');
+    debugger;
+    toastr.success(`New pipe (${this.props.pipes.length}) saved
+      "${this.props.pipes[this.props.pipes.length-1].description}"`);
     this.context.router.push('/pipes');
   }
 
+  onCompute(event) {
+    toastr.success(`Currently computing`);
+    ComputeApi.computePipe(this.props.pipes);
+    toastr.success(`Finished computing`);
+
+  }
+
   render() {
-    console.log(this.props);
-    console.log(this.state);
 
     let {pipes} = this.props;
     const {parameters} = this.props;
@@ -97,6 +107,11 @@ class PipesPage extends React.Component {
             errors={this.state.errors}
           />
         </div>
+        <br />
+        <input type="submit"
+         value={"Compute"}
+         className={"btn btn-primary"}
+         onClick={this.onCompute}/>
       </div>
     );
   }
