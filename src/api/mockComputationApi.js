@@ -30,37 +30,30 @@ const data =
 
 
 class ComputationApi {
-  static getAllAuthors() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(Object.assign([], authors));
-      }, delay);
-    });
-  }
-
   static computePipe(pipes) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-
-
         let pipe_length = [];
         let cumulative_length = [];
         let mean_diameter = [];
         let nonDimensional_Roughness = [];
         let fluid_rate = [];
-        let fluid_veloicty = [];
+        let fluid_velocity = [];
         let reynolds = [];
 
         let correlation = [];
         let friction_factor = [];
+        let pressure_drop_friction = [];
+        let pressure_drop_static = [];
+        let pressure_drop_overall = [];
 
         for (let i = 0; i < pipes.length; i++) {
           pipe_length.push(Math.sqrt(Math.pow(pipes[i].horizontal_change, 2) + Math.pow(pipes[i].vertical_change, 2)));
           mean_diameter.push(pipes[i].inner_diamter * Math.pow(1 + (inputs.volumetric_expansion / 100), 0.5));
           nonDimensional_Roughness.push(pipes[i].roughness / mean_diameter[i]);
           fluid_rate.push(inputs.required_flowrate / 3600 / pipes[i].cores);
-          fluid_veloicty.push(fluid_rate[i] / (Math.PI * Math.pow((mean_diameter[i] / 1000 / 2), 2)));
-          reynolds.push((inputs.density * fluid_veloicty[i] * mean_diameter[i] / 1000) / (inputs.viscosity / 1000));
+          fluid_velocity.push(fluid_rate[i] / (Math.PI * Math.pow((mean_diameter[i] / 1000 / 2), 2)));
+          reynolds.push((inputs.density * fluid_velocity[i] * mean_diameter[i] / 1000) / (inputs.viscosity / 1000));
 
           // switch to chosen fluid model: laminar, transitional, turbulent
           const ff_laminar = 64 / reynolds[i];
@@ -77,6 +70,11 @@ class ComputationApi {
             correlation.push("Turbulent");
             friction_factor.push(ff_colebrook);
           }
+
+          pressure_drop_friction.push(friction_factor[i]*pipe_length[i]/(mean_diameter[i]/1000)*inputs.density*Math.pow(fluid_velocity[i],2)/2*0.00001);
+          pressure_drop_static.push(inputs.density*9.81*pipes[i].vertical_change/100000);
+          pressure_drop_overall.push(pressure_drop_friction[i]-pressure_drop_static[i]);
+
 
           // not sure if neccessary
           if (i === 0) {
@@ -102,17 +100,26 @@ class ComputationApi {
         console.log("fluid_rate");
         console.log(fluid_rate);
         // Validated
-        console.log("fluid_veloicty");
-        console.log(fluid_veloicty);
+        console.log("fluid_velocity");
+        console.log(fluid_velocity);
         // V
         console.log("reynolds");
         console.log(reynolds);
         // V
         console.log("correlation");
         console.log(correlation);
-        //
+        // V
         console.log("friction_factor");
         console.log(friction_factor);
+        // V
+        console.log("pressure_drop_friction");
+        console.log(pressure_drop_friction);
+        // V
+        console.log("pressure_drop_static");
+        console.log(pressure_drop_static);
+        // V
+        console.log("pressure_drop_overall  ");
+        console.log(pressure_drop_overall);
 
 
         resolve(pipes);
