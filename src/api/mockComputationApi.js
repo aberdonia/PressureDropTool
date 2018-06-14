@@ -14,7 +14,8 @@ const inputs =
     C_Value_Threshold_for_Erosion: 125,
     required_flowrate: 0.5, //m3/hr
     density: 1070, //kg/m3
-    viscosity: 6.98 //cP
+    viscosity: 6.98, //cP
+    outlet_pressure: 630 //bar
   };
 
 const data =
@@ -31,6 +32,8 @@ const data =
 
 class ComputationApi {
   static computePipe(pipes) {
+    const graphArray = [];
+
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         let pipe_length = [];
@@ -85,6 +88,27 @@ class ComputationApi {
         }
 
         debugger;
+        //sum array
+        const total_pressure_drop = pressure_drop_overall.reduce((a, b) => a + b, 0)
+        // build graph inputs
+        let previousPressure=0;
+        for (let i = 0; i < pressure_drop_overall.length+1; i++){
+          let graphArrayObject = {}
+          if (i === 0) {
+            graphArrayObject.x=0;
+            graphArrayObject.y=inputs.outlet_pressure+total_pressure_drop;
+            previousPressure=inputs.outlet_pressure+total_pressure_drop;
+          } else {
+            graphArrayObject.x=cumulative_length[i-1];
+            graphArrayObject.y=previousPressure-pressure_drop_overall[i-1];
+            previousPressure -= pressure_drop_overall[i-1];
+          }
+          graphArray.push(graphArrayObject);
+        }
+
+
+
+        debugger;
         // Validated
         console.log(pipe_length);
         // Validated
@@ -120,6 +144,12 @@ class ComputationApi {
         // V
         console.log("pressure_drop_overall  ");
         console.log(pressure_drop_overall);
+
+        //
+        console.log(graphArray);
+        console.log(total_pressure_drop);
+
+
 
 
         resolve(pipes);

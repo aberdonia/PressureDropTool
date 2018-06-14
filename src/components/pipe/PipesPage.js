@@ -8,7 +8,7 @@ import * as pipeActions from "../../actions/pipeActions";
 import {bindActionCreators} from "redux";
 import TextInput from "../common/TextInput";
 import toastr from "toastr";
-import ComputeApi from "../../api/mockComputationApi"
+import ComputeApi from "../../api/mockComputationApi";
 
 class PipesPage extends React.Component {
   constructor(props, context) {
@@ -42,7 +42,6 @@ class PipesPage extends React.Component {
       // TODO: add duplicate validation this.props.pipe.description != nextProps.pipe.description
       // Necessary to populate form when existing course is loaded directly.
       console.log(nextProps);
-      debugger;
       this.setState({pipe: Object.assign({}, nextProps.pipe)});
     }
   }
@@ -68,7 +67,6 @@ class PipesPage extends React.Component {
   // use promise in saveCourse() to provide better UI. waits for api call to complete before changing page
   redirect() {
     this.setState({saving: false});
-    debugger;
     toastr.success(`New pipe (${this.props.pipes.length}) saved
       "${this.props.pipes[this.props.pipes.length-1].description}"`);
     this.context.router.push('/pipes');
@@ -76,9 +74,11 @@ class PipesPage extends React.Component {
 
   onCompute(event) {
     toastr.success(`Currently computing`);
-    ComputeApi.computePipe(this.props.pipes);
-    toastr.success(`Finished computing`);
-
+    ComputeApi.computePipe(this.props.pipes)
+      .then(() =>{
+        toastr.success(`Finished computing`);
+        console.log(ComputeApi.graphObject);
+      });
   }
 
   render() {
@@ -128,7 +128,9 @@ class PipesPage extends React.Component {
 // dispatch validation
 PipesPage.propTypes = {
   pipes: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  pipe: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  parameters: PropTypes.object.isRequired
 };
 
 // Pull in the React Router context so router is available on this.context.router.

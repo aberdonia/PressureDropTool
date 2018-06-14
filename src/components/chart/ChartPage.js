@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Bar, Scatter, Pie} from 'react-chartjs-2';
 import {Link} from 'react-router';
 
+//TODO send data from computation to chartPage
+
 const data = {
   labels: ['Scatter'],
   datasets: [
