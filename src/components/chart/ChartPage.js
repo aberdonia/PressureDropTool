@@ -39,9 +39,7 @@ class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chartData: {
-        labels: ['Boston', 'dssad', 'dsfddsf']
-      }
+      
     };
   }
 

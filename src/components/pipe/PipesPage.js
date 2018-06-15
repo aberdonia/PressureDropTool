@@ -5,6 +5,7 @@ import AddPipeRow from "../pipe/AddPipeRow";
 import PipeList from "./PipeList";
 import {connect} from "react-redux";
 import * as pipeActions from "../../actions/pipeActions";
+import * as chartsActions from "../../actions/chartActions";
 import {bindActionCreators} from "redux";
 import TextInput from "../common/TextInput";
 import toastr from "toastr";
@@ -21,6 +22,7 @@ class PipesPage extends React.Component {
       pipe: Object.assign({}, this.props.pipe),
       parameters: Object.assign({}, this.props.parameters),
       errors: {},
+      chartData: Object.assign({}, this.props.chartData),
       // use this saving state to indicate when button is pressed and api call getting carried out, provide better UI feedback
       // could use a reducer, but this is fleeting data that rest of app doesn't care about, so no point
       saving: false
@@ -38,11 +40,17 @@ class PipesPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     // this.setState({pipe: Object.assign({}, nextProps.pipe)});
     // validate that the props have actually changed.
+      debugger;
     if (this.props != nextProps) {
       // TODO: add duplicate validation this.props.pipe.description != nextProps.pipe.description
       // Necessary to populate form when existing course is loaded directly.
+      debugger;
       console.log(nextProps);
       this.setState({pipe: Object.assign({}, nextProps.pipe)});
+
+      // set chart props
+      this.setState({chartData: Object.assign({}, nextProps.chartData)});
+      console.log(this.state);
     }
   }
 
@@ -56,7 +64,7 @@ class PipesPage extends React.Component {
   savePipe(event) {
     event.preventDefault();
     this.setState({saving: true});
-    this.props.actions.savePipe(this.state.pipe)
+    this.props.actions.pipeActions.savePipe(this.state.pipe)
       .then(() => this.redirect())
       .catch(error => {
         toastr.error(error);
@@ -74,10 +82,14 @@ class PipesPage extends React.Component {
 
   onCompute(event) {
     toastr.success(`Currently computing`);
-    ComputeApi.computePipe(this.props.pipes)
-      .then(() =>{
+    this.props.actions.chartActions.loadChartData(this.props.pipes)
+    // ComputeApi.computePipe(this.props.pipes)
+      .then((graphArray) =>{
         toastr.success(`Finished computing`);
-        console.log(ComputeApi.graphObject);
+        console.log(`this.props.chartData ${this.props.chartData}`);
+        console.log(`graph array resolve ${graphArray}`);
+        debugger;
+        // this.props.actions.chartActions.loadChartData();
       });
   }
 
@@ -130,7 +142,8 @@ PipesPage.propTypes = {
   pipes: PropTypes.array.isRequired,
   pipe: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  parameters: PropTypes.object.isRequired
+  parameters: PropTypes.object.isRequired,
+  chartData: PropTypes.array.isRequired
 };
 
 // Pull in the React Router context so router is available on this.context.router.
@@ -146,13 +159,17 @@ function mapStateToProps(state, ownProps) {
   return {
     // defined in index.js reducers
     pipes: state.pipes,
-    parameters: state.parameters
+    parameters: state.parameters,
+    chartData: state.chartData
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(pipeActions, dispatch)
+    actions: {
+      pipeActions: bindActionCreators(pipeActions, dispatch),
+      chartActions: bindActionCreators(chartsActions, dispatch)
+    }
   };
 }
 

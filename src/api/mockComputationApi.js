@@ -2,6 +2,9 @@ import delay from './delay';
 // https://github.com/scijs/newton-raphson-method for goal seeking.
 var nr = require('newton-raphson-method');
 
+
+const graphArray = [];
+
 const contants =
   {
     x: 17,
@@ -21,7 +24,7 @@ const inputs =
 const data =
   {
     Re_laminar_max: 2000,
-    Re_transitional_max: 4000,
+    Re_transitional_max: 4000
   };
 
 // Re	Flow Regime
@@ -31,11 +34,12 @@ const data =
 
 
 class ComputationApi {
+
   static computePipe(pipes) {
-    const graphArray = [];
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
+        // this is a bit static, could be imporved by making dynamic by having all the keys in an object,all of these 'columns' (array can be properties.) "object.keys returns an array of strings."
         let pipe_length = [];
         let cumulative_length = [];
         let mean_diameter = [];
@@ -49,6 +53,8 @@ class ComputationApi {
         let pressure_drop_friction = [];
         let pressure_drop_static = [];
         let pressure_drop_overall = [];
+
+                
 
         for (let i = 0; i < pipes.length; i++) {
           pipe_length.push(Math.sqrt(Math.pow(pipes[i].horizontal_change, 2) + Math.pow(pipes[i].vertical_change, 2)));
@@ -87,7 +93,6 @@ class ComputationApi {
           }
         }
 
-        debugger;
         //sum array
         const total_pressure_drop = pressure_drop_overall.reduce((a, b) => a + b, 0)
         // build graph inputs
@@ -152,7 +157,7 @@ class ComputationApi {
 
 
 
-        resolve(pipes);
+        resolve(graphArray);
       }, delay);
     });
   }
@@ -165,17 +170,16 @@ class ComputationApi {
     return nr(f, 0.01);
   }
 
-  static deleteAuthor(authorId) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const indexOfAuthorToDelete = authors.findIndex(author => {
-          author.id == authorId;
-        });
-        authors.splice(indexOfAuthorToDelete, 1);
-        resolve();
-      }, delay);
-    });
-  }
+
+static getChartData(){
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // console.log(`graphArray ${graphArray}`);
+      // console.log(`graphArray[0] ${graphArray[0]}`);
+      resolve(graphArray);
+    }, delay);
+  });
+}
 }
 
 export default ComputationApi;

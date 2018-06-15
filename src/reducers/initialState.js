@@ -6,5 +6,6 @@ export default {
   courses: [],
   ajaxCallsInProgress: 0,
   pipes: [],
-  parameters: parameters
+  parameters: parameters,
+  chartData: []
 };
