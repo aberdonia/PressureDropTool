@@ -38,19 +38,25 @@ class ComputationApi {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         // this is a bit static, could be imporved by making dynamic by having all the keys in an object,all of these 'columns' (array can be properties.) "object.keys returns an array of strings."
-        let pipe_length = [];
-        let cumulative_length = [];
-        let mean_diameter = [];
-        let nonDimensional_Roughness = [];
-        let fluid_rate = [];
-        let fluid_velocity = [];
-        let reynolds = [];
+        const pipe_length = [];
+        const cumulative_length = [];
+        const mean_diameter = [];
+        const nonDimensional_Roughness = [];
+        const fluid_rate = [];
+        const fluid_velocity = [];
+        const reynolds = [];
 
-        let correlation = [];
-        let friction_factor = [];
-        let pressure_drop_friction = [];
-        let pressure_drop_static = [];
-        let pressure_drop_overall = [];
+        const correlation = [];
+        const friction_factor = [];
+        const pressure_drop_friction = [];
+        const pressure_drop_static = [];
+        const pressure_drop_overall = [];
+
+        const distance_x = [0];
+        const displacement_y = [0];
+
+        // chart keys
+        const geometry=[];
 
         const graphArray = [];
 
@@ -85,17 +91,35 @@ class ComputationApi {
           pressure_drop_overall.push(pressure_drop_friction[i]-pressure_drop_static[i]);
 
 
-          // not sure if neccessary
+          
+          distance_x.push(distance_x[i]+pipes[i].horizontal_change)
+          displacement_y.push(displacement_y[i]-pipes[i].vertical_change)
+
+
           if (i === 0) {
             cumulative_length.push(pipe_length[0]);
           } else {
+            debugger;
             cumulative_length.push(cumulative_length[i - 1] + pipe_length[i]);
           }
+
+        // ****build graph inputs***    
+        // geometry
+
+        // const graphArrayObject = {};
+        // graphArrayObject.x=distance_x[i];
+        // graphArrayObject.y=displacement_y[i];
+        // geometry.push(graphArrayObject);
+
         }
+
+        console.log(geometry);
+
 
         //sum array
         const total_pressure_drop = pressure_drop_overall.reduce((a, b) => a + b, 0);
-        // build graph inputs
+        
+        // pressure drop
         let previousPressure=0;
         for (let i = 0; i < pressure_drop_overall.length+1; i++){
           let graphArrayObject = {};
@@ -110,6 +134,10 @@ class ComputationApi {
           }
           graphArray.push(graphArrayObject);
         }
+
+       
+
+
 
 
 
