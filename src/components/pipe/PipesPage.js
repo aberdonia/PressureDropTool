@@ -89,8 +89,14 @@ class PipesPage extends React.Component {
         console.log(`this.props.chartData ${this.props.chartData}`);
         console.log(`graph array resolve ${graphArray}`);
         debugger;
+        this.redirectToChart();
         // this.props.actions.chartActions.loadChartData();
       });
+  }
+
+  redirectToChart() {
+    this.setState({saving: false});
+    this.context.router.push('/chart');
   }
 
   render() {

@@ -3,8 +3,6 @@ import delay from './delay';
 var nr = require('newton-raphson-method');
 
 
-const graphArray = [];
-
 const contants =
   {
     x: 17,
@@ -54,6 +52,8 @@ class ComputationApi {
         let pressure_drop_static = [];
         let pressure_drop_overall = [];
 
+        const graphArray = [];
+
                 
 
         for (let i = 0; i < pipes.length; i++) {
@@ -94,11 +94,11 @@ class ComputationApi {
         }
 
         //sum array
-        const total_pressure_drop = pressure_drop_overall.reduce((a, b) => a + b, 0)
+        const total_pressure_drop = pressure_drop_overall.reduce((a, b) => a + b, 0);
         // build graph inputs
         let previousPressure=0;
         for (let i = 0; i < pressure_drop_overall.length+1; i++){
-          let graphArrayObject = {}
+          let graphArrayObject = {};
           if (i === 0) {
             graphArrayObject.x=0;
             graphArrayObject.y=inputs.outlet_pressure+total_pressure_drop;
@@ -171,15 +171,15 @@ class ComputationApi {
   }
 
 
-static getChartData(){
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      // console.log(`graphArray ${graphArray}`);
-      // console.log(`graphArray[0] ${graphArray[0]}`);
-      resolve(graphArray);
-    }, delay);
-  });
-}
+// static getChartData(){
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       // console.log(`graphArray ${graphArray}`);
+//       // console.log(`graphArray[0] ${graphArray[0]}`);
+//       resolve(graphArray);
+//     }, delay);
+//   });
+// }
 }
 
 export default ComputationApi;

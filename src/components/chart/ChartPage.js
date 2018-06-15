@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Bar, Scatter, Pie} from 'react-chartjs-2';
 import {Link} from 'react-router';
+import {connect} from "react-redux";
 
 //TODO send data from computation to chartPage
 
@@ -20,16 +21,7 @@ const data = {
       pointHoverBorderColor: 'rgba(220,220,220,1)',
       pointHoverBorderWidth: 2,
       pointRadius: 1,
-      pointHitRadius: 10,
-      data: [
-        { x: 0, y: 1051.19 },
-        { x: 110, y: 851.59 },
-        { x: 1123.651321, y: 911.56 },
-        { x: 1130.651321, y: 911.39 },
-        { x: 1161.651321, y: 911.09 },
-        { x: 1497.545649, y: 934.76 },
-        { x: 1517.545649, y: 934.57 }
-      ]
+      pointHitRadius: 10
     }
   ]
 };
@@ -38,21 +30,43 @@ const data = {
 class Chart extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      
-    };
+
+
+    this.buildData = this.buildData.bind(this);
+  }
+
+  buildData(staticData){
+    debugger;
+    staticData.datasets[0].data = this.props.chartData;
+    return data;
+
   }
 
 
   render() {
+    debugger;
     return (
       <div className="chart">
         <Scatter
-          data={data}
+          data={this.buildData(data)}
         />
       </div>
     );
   }
+
+
+
+  
 }
 
-export default Chart;
+function mapStateToProps(state, ownProps) {
+  debugger;
+  return {
+    // defined in index.js reducers
+    chartData: state.chartData
+  };
+}
+
+
+
+export default connect(mapStateToProps)(Chart);
