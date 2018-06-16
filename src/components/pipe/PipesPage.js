@@ -82,15 +82,23 @@ class PipesPage extends React.Component {
 
   onCompute(event) {
     toastr.success(`Currently computing`);
+    // let cleanPipes = this.props.pipes;
+    // cleanPipes.forEach(function (entry) {
+    //   console.log(entry);
+    //   entry.cores = Number(entry.cores);
+    //   entry.horizontal_change = Number(entry.horizontal_change);
+    //   entry.inner_diamter = Number(entry.inner_diamter);
+    //   entry.roughness = Number(entry.roughness);
+    //   entry.vertical_change = Number(entry.vertical_change);
+    // });
+    console.log("finished forEach");
+
     this.props.actions.chartActions.loadChartData(this.props.pipes)
-    // ComputeApi.computePipe(this.props.pipes)
-      .then((graphArray) =>{
+      .then(() =>{
         toastr.success(`Finished computing`);
         console.log(`this.props.chartData ${this.props.chartData}`);
-        console.log(`graph array resolve ${graphArray}`);
         debugger;
         this.redirectToChart();
-        // this.props.actions.chartActions.loadChartData();
       });
   }
 
@@ -149,7 +157,7 @@ PipesPage.propTypes = {
   pipe: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   parameters: PropTypes.object.isRequired,
-  chartData: PropTypes.array.isRequired
+  chartData: PropTypes.object.isRequired
 };
 
 // Pull in the React Router context so router is available on this.context.router.

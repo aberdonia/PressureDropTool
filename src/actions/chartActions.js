@@ -12,7 +12,6 @@ export function  loadChartData(pipes) {
       dispatch(beginAjaxCall());
       return computeApi.computePipe(pipes).then(chartData => {
         dispatch(loadChartDataSuccess(chartData));
-        console.log(`chartData ${JSON.stringify(chartData)}`); //works
         console.dir(chartData); //works
       }).catch(error => {
         throw(error);

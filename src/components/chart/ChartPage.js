@@ -1,12 +1,11 @@
-import React, {Component} from 'react';
-import {Bar, Scatter, Pie} from 'react-chartjs-2';
-import {Link} from 'react-router';
+import React from 'react';
+import {Scatter} from 'react-chartjs-2';
 import {connect} from "react-redux";
 import SelectInput from "../common/SelectInput";
 
 //TODO send data from computation to chartPage
 
-const data = {
+const inital_data = {
   labels: ['Scatter'],
   datasets: [
     {
@@ -28,51 +27,65 @@ const data = {
 };
 
 
-class Chart extends Component {
-  constructor(props) {
+class Chart extends React.Component {
+  constructor(props, context) {
     super(props);
 
+    // add pressure_profile to data to show on load.
+    const data = inital_data;
+    inital_data.datasets[0].data = this.props.chartData.pressure_profile;
 
-    this.buildData = this.buildData.bind(this);
+    this.state = {
+      // currentDataSet: {},
+      // // identify current chart view
+      // chartView: Object.keys(this.props.chartData)[0]
+      chartData: this.props.chartData,
+      data: data
+    };
+
+    // // display pressure profile initially
+    // let temp_data = Object.assign({}, this.state.data);
+    // temp_data.datasets[0].data = this.state.chartData.pressure_profile;
+    // this.setState({data: temp_data});
+
+
+    this.onChange=this.onChange.bind(this);
   }
 
-  buildData(staticData){
+  onChange(event){
     debugger;
-    staticData.datasets[0].data = this.props.chartData.pressure_profile;
-    return data;
+    console.log(`onChange`);
 
-  }
-
-  onChange(){
-    console.log("on change");
+    let temp_data = Object.assign({}, this.state.data);
+    temp_data.datasets[0].data = this.state.chartData[event.target.value];
+    return this.setState({data: temp_data});
   }
 
 
   render() {
+    let data = this.state.data;
     debugger;
+    console.log(data);
     return (
       <div className="chart">
         <br/>
         <br/>
-          <SelectInput name={"test"} label={"Chose data to display:"} onChange={this.onChange()} options={Object.keys(this.props.chartData)}
+          <SelectInput name={"test"} label={"Chose data to display:"} onChange={this.onChange} options={Object.keys(this.props.chartData)}
           />
         <Scatter
-          data={this.buildData(data)}
+          data={data}
         />
       </div>
     );
   }
 
-
-
-
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   debugger;
   return {
     // defined in index.js reducers
-    chartData: state.chartData
+    chartData: state.chartData[0]
   };
 }
 

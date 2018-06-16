@@ -3,7 +3,7 @@ import delay from './delay';
 var nr = require('newton-raphson-method');
 
 
-const contants =
+const constants =
   {
     x: 17,
     y: 2
@@ -92,10 +92,9 @@ class ComputationApi {
           pressure_drop_overall.push(pressure_drop_friction[i]-pressure_drop_static[i]);
 
 
-
-          distance_x.push(distance_x[i]+pipes[i].horizontal_change);
+          // convert to number so js doesn't interpret as string and concat
+          distance_x.push(distance_x[i]+Number(pipes[i].horizontal_change));
           displacement_y.push(displacement_y[i]-pipes[i].vertical_change);
-          debugger;
 
           // ****build graph inputs***
           const graphArrayObject = {};
