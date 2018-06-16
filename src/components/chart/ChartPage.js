@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Bar, Scatter, Pie} from 'react-chartjs-2';
 import {Link} from 'react-router';
 import {connect} from "react-redux";
+import SelectInput from "../common/SelectInput";
 
 //TODO send data from computation to chartPage
 
@@ -37,9 +38,13 @@ class Chart extends Component {
 
   buildData(staticData){
     debugger;
-    staticData.datasets[0].data = this.props.chartData;
+    staticData.datasets[0].data = this.props.chartData.pressure_profile;
     return data;
 
+  }
+
+  onChange(){
+    console.log("on change");
   }
 
 
@@ -47,6 +52,10 @@ class Chart extends Component {
     debugger;
     return (
       <div className="chart">
+        <br/>
+        <br/>
+          <SelectInput name={"test"} label={"Chose data to display:"} onChange={this.onChange()} options={Object.keys(this.props.chartData)}
+          />
         <Scatter
           data={this.buildData(data)}
         />
@@ -56,7 +65,7 @@ class Chart extends Component {
 
 
 
-  
+
 }
 
 function mapStateToProps(state, ownProps) {

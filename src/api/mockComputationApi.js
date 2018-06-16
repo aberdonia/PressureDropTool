@@ -57,10 +57,11 @@ class ComputationApi {
 
         // chart keys
         const geometry=[];
+        const pressure_profile=[];
 
-        const graphArray = [];
+        const graphObject = {};
 
-                
+
 
         for (let i = 0; i < pipes.length; i++) {
           pipe_length.push(Math.sqrt(Math.pow(pipes[i].horizontal_change, 2) + Math.pow(pipes[i].vertical_change, 2)));
@@ -91,26 +92,24 @@ class ComputationApi {
           pressure_drop_overall.push(pressure_drop_friction[i]-pressure_drop_static[i]);
 
 
-          
-          distance_x.push(distance_x[i]+pipes[i].horizontal_change)
-          displacement_y.push(displacement_y[i]-pipes[i].vertical_change)
 
+          distance_x.push(distance_x[i]+pipes[i].horizontal_change);
+          displacement_y.push(displacement_y[i]-pipes[i].vertical_change);
+          debugger;
+
+          // ****build graph inputs***
+          const graphArrayObject = {};
+          graphArrayObject.x=distance_x[i+1];
+          graphArrayObject.y=displacement_y[i+1];
 
           if (i === 0) {
             cumulative_length.push(pipe_length[0]);
+            geometry.push({x:0,y:0});
+            geometry.push(graphArrayObject);
           } else {
-            debugger;
             cumulative_length.push(cumulative_length[i - 1] + pipe_length[i]);
+            geometry.push(graphArrayObject);
           }
-
-        // ****build graph inputs***    
-        // geometry
-
-        // const graphArrayObject = {};
-        // graphArrayObject.x=distance_x[i];
-        // graphArrayObject.y=displacement_y[i];
-        // geometry.push(graphArrayObject);
-
         }
 
         console.log(geometry);
@@ -118,7 +117,7 @@ class ComputationApi {
 
         //sum array
         const total_pressure_drop = pressure_drop_overall.reduce((a, b) => a + b, 0);
-        
+
         // pressure drop
         let previousPressure=0;
         for (let i = 0; i < pressure_drop_overall.length+1; i++){
@@ -132,16 +131,12 @@ class ComputationApi {
             graphArrayObject.y=previousPressure-pressure_drop_overall[i-1];
             previousPressure -= pressure_drop_overall[i-1];
           }
-          graphArray.push(graphArrayObject);
+          pressure_profile.push(graphArrayObject);
         }
 
-       
+        graphObject.pressure_profile = pressure_profile;
+        graphObject.geometry = geometry;
 
-
-
-
-
-        debugger;
         // Validated
         console.log(pipe_length);
         // Validated
@@ -179,13 +174,11 @@ class ComputationApi {
         console.log(pressure_drop_overall);
 
         //
-        console.log(graphArray);
+        console.log(graphObject);
         console.log(total_pressure_drop);
 
 
-
-
-        resolve(graphArray);
+        resolve(graphObject);
       }, delay);
     });
   }
