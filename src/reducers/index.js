@@ -5,6 +5,7 @@ import ajaxCallsInProgress from './ajaxStatusReducer';
 import pipes from './pipeReducer';
 import parameters from './parametersReducer';
 import chartData from './chartReducer';
+import inputs from './inputsReducer';
 
 const rootReducer = combineReducers({
   courses,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   ajaxCallsInProgress,
   pipes,
   parameters,
-  chartData
+  chartData,
+  inputs
 });
 
 export default rootReducer;

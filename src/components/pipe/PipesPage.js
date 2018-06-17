@@ -6,10 +6,12 @@ import PipeList from "./PipeList";
 import {connect} from "react-redux";
 import * as pipeActions from "../../actions/pipeActions";
 import * as chartsActions from "../../actions/chartActions";
+import * as inputsActions from "../../actions/inputsActions";
 import {bindActionCreators} from "redux";
 import TextInput from "../common/TextInput";
 import toastr from "toastr";
 import ComputeApi from "../../api/mockComputationApi";
+import Inputs from "./Inputs";
 
 class PipesPage extends React.Component {
   constructor(props, context) {
@@ -23,6 +25,7 @@ class PipesPage extends React.Component {
       parameters: Object.assign({}, this.props.parameters),
       errors: {},
       chartData: Object.assign({}, this.props.chartData),
+      inputs: Object.assign({}, this.props.inputs),
       // use this saving state to indicate when button is pressed and api call getting carried out, provide better UI feedback
       // could use a reducer, but this is fleeting data that rest of app doesn't care about, so no point
       saving: false
@@ -33,6 +36,8 @@ class PipesPage extends React.Component {
     this.savePipe = this.savePipe.bind(this);
     // need this to locate props in onCompute function
     this.onCompute = this.onCompute.bind(this);
+    this.saveInputs = this.saveInputs.bind(this);
+    this.updateInputState = this.updateInputState.bind(this);
   }
 
   // use this to update the state (see constrctor *). react life cycle function.
@@ -50,15 +55,25 @@ class PipesPage extends React.Component {
 
       // set chart props
       this.setState({chartData: Object.assign({}, nextProps.chartData)});
+      this.setState({inputs: Object.assign({}, nextProps.inputs)});
       console.log(this.state);
     }
   }
 
   updatePipeState(event) {
+    debugger;
     const field = event.target.name;
     let pipe = Object.assign({}, this.state.pipe);
     pipe[field] = event.target.value;
     return this.setState({pipe: pipe});
+  }
+
+  updateInputState(event) {
+    debugger;
+    const field = event.target.name;
+    let inputs = Object.assign({}, this.state.inputs);
+    inputs[field] = event.target.value;
+    return this.setState({inputs: inputs});
   }
 
   savePipe(event) {
@@ -66,6 +81,18 @@ class PipesPage extends React.Component {
     this.setState({saving: true});
     this.props.actions.pipeActions.savePipe(this.state.pipe)
       .then(() => this.redirect())
+      .catch(error => {
+        toastr.error(error);
+        this.setState({saving: false});
+      });
+  }
+
+  saveInputs(event){
+    event.preventDefault();
+    this.setState({saving: true});
+    debugger;
+    this.props.actions.inputsActions.saveInputs(this.state.inputs)
+      .then(() => console.log(this.state))
       .catch(error => {
         toastr.error(error);
         this.setState({saving: false});
@@ -82,17 +109,6 @@ class PipesPage extends React.Component {
 
   onCompute(event) {
     toastr.success(`Currently computing`);
-    // let cleanPipes = this.props.pipes;
-    // cleanPipes.forEach(function (entry) {
-    //   console.log(entry);
-    //   entry.cores = Number(entry.cores);
-    //   entry.horizontal_change = Number(entry.horizontal_change);
-    //   entry.inner_diamter = Number(entry.inner_diamter);
-    //   entry.roughness = Number(entry.roughness);
-    //   entry.vertical_change = Number(entry.vertical_change);
-    // });
-    console.log("finished forEach");
-
     this.props.actions.chartActions.loadChartData(this.props.pipes)
       .then(() =>{
         toastr.success(`Finished computing`);
@@ -111,9 +127,30 @@ class PipesPage extends React.Component {
 
     let {pipes} = this.props;
     const {parameters} = this.props;
+    let {inputs} = this.props;
+    debugger;
+    let inputParameters = Object.keys(inputs);
 
     return (
       <div>
+
+        <table className={"table"}>
+          <thead>
+          <tr>
+            {inputParameters.map((input) =>
+              <th key={input}> {input}</th>
+            )}
+          </tr>
+          </thead>
+        </table>
+
+          <Inputs
+            onChange={this.updateInputState}
+            parameters={inputParameters}
+            inputs={this.state.inputs}
+          />
+
+
         <table className={"table"}>
           <thead>
           <tr>
@@ -138,6 +175,10 @@ class PipesPage extends React.Component {
          value={"Compute"}
          className={"btn btn-primary"}
          onClick={this.onCompute}/>
+        <input type="submit"
+               value={"test"}
+               className={"btn btn-primary"}
+               onClick={this.saveInputs}/>
       </div>
     );
   }
@@ -157,7 +198,8 @@ PipesPage.propTypes = {
   pipe: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   parameters: PropTypes.object.isRequired,
-  chartData: PropTypes.object.isRequired
+  chartData: PropTypes.object.isRequired,
+  inputs: PropTypes.object.isRequired
 };
 
 // Pull in the React Router context so router is available on this.context.router.
@@ -170,11 +212,13 @@ PipesPage.contextTypes = {
 
 
 function mapStateToProps(state, ownProps) {
+  debugger;
   return {
     // defined in index.js reducers
     pipes: state.pipes,
     parameters: state.parameters,
-    chartData: state.chartData
+    chartData: state.chartData,
+    inputs: state.inputs
   };
 }
 
@@ -182,7 +226,8 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       pipeActions: bindActionCreators(pipeActions, dispatch),
-      chartActions: bindActionCreators(chartsActions, dispatch)
+      chartActions: bindActionCreators(chartsActions, dispatch),
+      inputsActions: bindActionCreators(inputsActions, dispatch)
     }
   };
 }

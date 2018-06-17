@@ -10,6 +10,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
     value={pipe.description}
     onChange={onChange}
     placeholder={parameters[1].label}
+    type={"text"}
     error={errors.description}/>
   <TextInput
     name={parameters[2].name}
@@ -17,6 +18,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
     value={pipe.horizontal_change}
     onChange={onChange}
     placeholder={parameters[2].label}
+    type={"number"}
     error={errors.horizontal_change}/>
   <TextInput
     name={parameters[3].name}
@@ -24,6 +26,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
     value={pipe.vertical_change}
     onChange={onChange}
     placeholder={parameters[3].label}
+    type={"number"}
     error={errors.vertical_change}/>
   <TextInput
     name={parameters[4].name}
@@ -31,6 +34,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
     value={pipe.inner_diamter}
     onChange={onChange}
     placeholder={parameters[4].label}
+    type={"number"}
     error={errors.inner_diamter}/>
   <TextInput
     name={parameters[5].name}
@@ -38,6 +42,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
     value={pipe.roughness}
     onChange={onChange}
     placeholder={parameters[5].label}
+    type={"number"}
     error={errors.roughness}/>
   <TextInput
     name={parameters[6].name}
@@ -45,6 +50,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange, onSave}) => {
     value={pipe.cores}
     onChange={onChange}
     placeholder={parameters[6].label}
+    type={"number"}
     error={errors.cores}/>
   <input type="submit"
          value={"Add Pipe"}

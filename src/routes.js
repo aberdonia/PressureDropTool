@@ -16,7 +16,6 @@ export default (
     <Route path="course/:id" component={ManageCoursesPage} />
     <Route path="about" component={AboutPage} />
     <Route path="pipes" component={PipesPage} />
-    <Route path="pipes" component={PipesPage} />
     <Route path="chart" component={ChartPage} />
   </Route>
 );
