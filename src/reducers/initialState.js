@@ -7,6 +7,6 @@ export default {
   ajaxCallsInProgress: 0,
   pipes: [],
   parameters: parameters,
-  chartData: [],
+  chartData: {},
   inputs: {}
 };

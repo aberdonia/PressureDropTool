@@ -11,10 +11,8 @@ export function updateInputsSuccess(inputs) {
 }
 
 export function  loadInputs() {
-  debugger;
   return function (dispatch) {
     dispatch(beginAjaxCall());
-    debugger;
     return inputsApi.getAllInputs().then(inputs => {
       dispatch(loadInputsSuccess(inputs));
     }).catch(error => {
@@ -25,7 +23,6 @@ export function  loadInputs() {
 
 export function saveInputs(inputs) {
   return function (dispatch, getState) {
-    debugger;
     dispatch(beginAjaxCall());
     return inputsApi.saveInputs(inputs).then(savedInputs => {
       dispatch(updateInputsSuccess(savedInputs));
