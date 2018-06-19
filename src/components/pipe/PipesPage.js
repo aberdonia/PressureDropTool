@@ -109,7 +109,7 @@ class PipesPage extends React.Component {
 
   onCompute(event) {
     toastr.success(`Currently computing`);
-    this.props.actions.chartActions.loadChartData(this.props.pipes)
+    this.props.actions.chartActions.loadChartData(this.props)
       .then(() =>{
         toastr.success(`Finished computing`);
         console.log(`this.props.chartData ${this.props.chartData}`);
