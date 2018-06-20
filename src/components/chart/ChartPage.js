@@ -9,7 +9,7 @@ const inital_data = {
   labels: ['Scatter'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: "legend",
       fill: false,
       showLine: true,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -27,6 +27,8 @@ const inital_data = {
 };
 
 
+
+
 class Chart extends React.Component {
   constructor(props) {
     super(props);
@@ -41,7 +43,8 @@ class Chart extends React.Component {
       // // identify current chart view
       // chartView: Object.keys(this.props.chartData)[0]
       chartData: this.props.chartData,
-      data: data
+      data: data,
+      currentDisplay: 'pressure_profile'
     };
 
     // // display pressure profile initially
@@ -53,12 +56,15 @@ class Chart extends React.Component {
     this.onChange=this.onChange.bind(this);
   }
 
+
+
   onChange(event){
     debugger;
     console.log(`onChange`);
 
     let temp_data = Object.assign({}, this.state.data);
     temp_data.datasets[0].data = this.state.chartData[event.target.value];
+    this.setState({currentDisplay: event.target.value})
     return this.setState({data: temp_data});
   }
 
@@ -66,17 +72,52 @@ class Chart extends React.Component {
   render() {
     let data = this.state.data;
 
+    let xTitle = "";
+    let yTitle = "";
+
+switch (this.state.currentDisplay) {
+  case 'geometry':
+    xTitle = "Length (distance x) [meters]";
+    yTitle = "Relative Elevation (distance y) [meters]";
+    break; 
+ case 'pressure_profile':
+    xTitle = "Cumulative Length Along Pipe [meters]";
+    yTitle = "Total Pressure Drop [bar]";
+    break;
+  default:
+  xTitle = "No dataset selected";
+    yTitle = "No dataset selected";
+  }
     debugger;
     console.log(data);
     return (
+      <div>
+        <h1>Results</h1>
       <div className="chart">
-        <br/>
-        <br/>
           <SelectInput name={"test"} label={"Chose data to display:"} onChange={this.onChange} options={Object.keys(this.props.chartData)}
           />
         <Scatter
           data={data}
+          options={{legend: {
+              display: false
+              },
+              scales: {
+                xAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: xTitle
+                  }
+                }],
+                yAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: yTitle
+                  }
+                }]
+            }
+}}
         />
+      </div>
       </div>
     );
   }

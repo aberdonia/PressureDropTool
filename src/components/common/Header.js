@@ -15,7 +15,7 @@ const Header = ({loading}) => {
       <Link to="/pipes" activeClassName="active">Pipe</Link>
       {" | "}
       <Link to="/chart" activeClassName="active">Chart</Link>
-      {loading && <LoadingDots interval={100} dots={20}/>}
+      {/* {loading && <LoadingDots interval={100} dots={20}/>} */}
     </nav>
   );
 };

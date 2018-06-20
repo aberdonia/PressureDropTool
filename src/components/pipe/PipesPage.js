@@ -9,6 +9,9 @@ import {bindActionCreators} from "redux";
 import toastr from "toastr";
 import Inputs from "./Inputs";
 
+const inputParameters = ["Density (kg/m3)", "Viscosity (cP)", "Flow rate (m3/hr)", "Outlet Pressure (bar)"];
+
+
 class PipesPage extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -133,11 +136,11 @@ class PipesPage extends React.Component {
     let {pipes} = this.props;
     const {parameters} = this.props;
     let {inputs} = this.props;
-    let inputParameters = Object.keys(inputs);
+    let inputKeys = Object.keys(inputs);
 
     return (
       <div>
-        <br/><br/>
+      <h1>Pipeline</h1>
         <table className={"table"}>
           <thead>
           <tr>
@@ -149,7 +152,7 @@ class PipesPage extends React.Component {
         </table>
           <Inputs
             onChange={this.updateInputState}
-            parameters={inputParameters}
+            parameters={inputKeys}
             inputs={this.state.inputs}
             divClass={"field col-md-3"}
           />
@@ -169,7 +172,8 @@ class PipesPage extends React.Component {
         <div className={"row"}>
             <input type="submit"
             value={this.props.pipes.length+1}
-            className={"btn btn-primary pull-left col-md-1"}
+            className={"btn btn-secondary pull-left col-md-1"}
+            disabled={this.state.saving}
             onClick={this.savePipe}/>
               <AddPipeRow
                 pipe={this.state.pipe}
@@ -182,9 +186,14 @@ class PipesPage extends React.Component {
         <br />
         <br />
         <input type="submit"
-            value={"Compute"}
-            className={"btn btn-lg btn-block"}
+        
+        value={this.state.saving ? 'Computing...' : 'Compute'}
+            className={"btn btn-lg btn-block btn-primary"}
+            disabled={this.state.saving}
             onClick={this.onCompute}/>
+            <br />
+            <br />
+            <br />
       </div>
     );
   }

@@ -10,15 +10,12 @@ export function loadChartData(props, state) {
   return function (dispatch) {
     debugger;
     dispatch(beginAjaxCall());
-    console.log("PIPES HERE!!!!!!!!!!!!!!!!!!!");
-    console.log(state, props);
 
     try {
     let sendObj = {};
     sendObj.pipes = props.pipes;
     sendObj.inputs = state.inputs;
     let str = JSON.stringify(sendObj);
-    console.log(str);
     return fetch('http://localhost:3330/computation', {
         method: 'POST',
         mode: "cors",

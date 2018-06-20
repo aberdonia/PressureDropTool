@@ -5,7 +5,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange}) => {
   return (
 <div>
   <TextInput
-  divClass={"col-md-3"}
+  divClass={"col-md-2"}
     name={parameters[1].name}
     label={parameters[1].label}
     value={pipe.description}
@@ -37,7 +37,7 @@ const AddPipeRow = ({parameters,errors,pipe,onChange}) => {
     placeholder={parameters[4].label}
     error={errors.inner_diamter}/>
   <TextInput
-  divClass={"col-md-1"}
+  divClass={"col-md-2"}
     name={parameters[5].name}
     label={parameters[5].label}
     value={pipe.roughness}

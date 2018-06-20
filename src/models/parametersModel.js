@@ -14,7 +14,7 @@ const parameters = [{
     label: "Horizontal Change"
 },
 {
-    hearder: "Vertical Change (m)",
+    header: "Vertical Change (m)",
     name: "vertical_change",
     label: "Vertical Change"
 },
