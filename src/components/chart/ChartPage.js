@@ -87,6 +87,7 @@ function mapStateToProps(state) {
   debugger;
   return {
     // defined in index.js reducers
+    inputs: state.inputs,
     chartData: state.chartData
   };
 }

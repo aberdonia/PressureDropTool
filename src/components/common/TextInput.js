@@ -1,13 +1,13 @@
 import React, {PropTypes} from 'react';
 
-const TextInput = ({name, label, onChange, placeholder, value, error, type}) => {
+const TextInput = ({name, label, onChange, placeholder, value, error, type, divClass}) => {
   let wrapperClass = 'form-group';
   if (error && error.length > 0) {
     wrapperClass += " " + 'has-error';
   }
 
   return (
-    <div className={"field col-xs-2"}>
+    <div className={divClass}>
       <input
         type={type}
         name={name}

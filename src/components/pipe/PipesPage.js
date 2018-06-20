@@ -1,6 +1,4 @@
 import React, {PropTypes} from 'react';
-import {browserHistory, Link} from 'react-router';
-import PipeRow from '../pipe/PipeRow';
 import AddPipeRow from "../pipe/AddPipeRow";
 import PipeList from "./PipeList";
 import {connect} from "react-redux";
@@ -8,9 +6,7 @@ import * as pipeActions from "../../actions/pipeActions";
 import * as chartsActions from "../../actions/chartActions";
 import * as inputsActions from "../../actions/inputsActions";
 import {bindActionCreators} from "redux";
-import TextInput from "../common/TextInput";
 import toastr from "toastr";
-import ComputeApi from "../../api/mockComputationApi";
 import Inputs from "./Inputs";
 
 class PipesPage extends React.Component {
@@ -45,12 +41,9 @@ class PipesPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     // this.setState({pipe: Object.assign({}, nextProps.pipe)});
     // validate that the props have actually changed.
-      debugger;
     if (this.props != nextProps) {
       // TODO: add duplicate validation this.props.pipe.description != nextProps.pipe.description
       // Necessary to populate form when existing course is loaded directly.
-      debugger;
-      console.log(nextProps);
       this.setState({pipe: Object.assign({}, nextProps.pipe)});
 
       // set chart props
@@ -62,12 +55,10 @@ class PipesPage extends React.Component {
       // let newChartData = Object.assign({}, nextProps.chartData);
       // this.setState({chartData: newChartData});
       this.setState({inputs: Object.assign({}, nextProps.inputs)});
-      console.log(this.state);
     }
   }
 
   updatePipeState(event) {
-    debugger;
     const field = event.target.name;
     let pipe = Object.assign({}, this.state.pipe);
     pipe[field] = event.target.value;
@@ -75,7 +66,6 @@ class PipesPage extends React.Component {
   }
 
   updateInputState(event) {
-    debugger;
     const field = event.target.name;
     let inputs = Object.assign({}, this.state.inputs);
     inputs[field] = event.target.value;
@@ -93,16 +83,18 @@ class PipesPage extends React.Component {
       });
   }
 
-  saveInputs(event){
-    event.preventDefault();
-    this.setState({saving: true});
-    debugger;
-    this.props.actions.inputsActions.saveInputs(this.state.inputs)
-      .then(() => console.log(this.state))
+  // return promise to onCompute
+  saveInputs(){
+    return new Promise((resolve, reject) => {
+      this.setState({saving: true});
+      this.props.actions.inputsActions.saveInputs(this.state.inputs)
+      .then(() => resolve())
       .catch(error => {
         toastr.error(error);
         this.setState({saving: false});
+        reject();
       });
+    })
   }
 
   // use promise in saveCourse() to provide better UI. waits for api call to complete before changing page
@@ -115,16 +107,20 @@ class PipesPage extends React.Component {
 
   onCompute() {
     toastr.success(`Currently computing`);
-    debugger;
-
-    this.props.actions.chartActions.loadChartData(this.props, this.state)
+    this.setState({saving: true});
+    this.saveInputs().then(() => 
+    {
+      this.props.actions.chartActions.loadChartData(this.props, this.state)
       .then(() =>{
         toastr.success(`Finished computing`);
         console.log(`this.props.chartData ${this.props.chartData}`);
         // this.setState({chart});
-        debugger;
+        
+    this.setState({saving: false});
         this.redirectToChart();
       });
+    }
+  )
   }
 
   redirectToChart() {
@@ -141,23 +137,24 @@ class PipesPage extends React.Component {
 
     return (
       <div>
-
+        <br/><br/>
         <table className={"table"}>
           <thead>
           <tr>
             {inputParameters.map((input) =>
-              <th key={input}> {input}</th>
+              <th key={input} align={"center"} className={"col-md-3 text-center"}> {input}</th>
             )}
           </tr>
           </thead>
         </table>
-
           <Inputs
             onChange={this.updateInputState}
             parameters={inputParameters}
             inputs={this.state.inputs}
+            divClass={"field col-md-3"}
           />
-
+          
+        <br/><br/><br/><br/><br/>
 
         <table className={"table"}>
           <thead>
@@ -169,24 +166,25 @@ class PipesPage extends React.Component {
           </thead>
           <PipeList pipes={pipes}/>
         </table>
-        <div className={"form-group row"}>
-          <AddPipeRow
-            pipe={this.state.pipe}
-            onChange={this.updatePipeState}
-            onSave={this.savePipe}
-            parameters={this.state.parameters}
-            errors={this.state.errors}
-          />
+        <div className={"row"}>
+            <input type="submit"
+            value={this.props.pipes.length+1}
+            className={"btn btn-primary pull-left col-md-1"}
+            onClick={this.savePipe}/>
+              <AddPipeRow
+                pipe={this.state.pipe}
+                onChange={this.updatePipeState}
+                parameters={this.state.parameters}
+                errors={this.state.errors}
+              />
         </div>
         <br />
+        <br />
+        <br />
         <input type="submit"
-         value={"Compute"}
-         className={"btn btn-primary"}
-         onClick={this.onCompute}/>
-        <input type="submit"
-               value={"test"}
-               className={"btn btn-primary"}
-               onClick={this.saveInputs}/>
+            value={"Compute"}
+            className={"btn btn-lg btn-block"}
+            onClick={this.onCompute}/>
       </div>
     );
   }
