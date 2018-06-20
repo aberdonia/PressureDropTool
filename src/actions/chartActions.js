@@ -1,43 +1,50 @@
 import * as types from './actionTypes';
-import computeApi from "../api/mockComputationApi";
+// import computeApi from "../api/mockComputationApi";
 import {ajaxCallError, beginAjaxCall} from "./ajaxStatusActions";
 
 export function loadChartDataSuccess(chartData) {
   return {type: types.LOAD_CHART_DATA_SUCCESS, chartData};
 }
 
-export function loadChartData(props) {
+export function loadChartData(props, state) {
   return function (dispatch) {
     debugger;
     dispatch(beginAjaxCall());
     console.log("PIPES HERE!!!!!!!!!!!!!!!!!!!");
-    console.log(props);
+    console.log(state, props);
+
     try {
-      fetch('http://localhost:3330/computation', {
+    let sendObj = {};
+    sendObj.pipes = props.pipes;
+    sendObj.inputs = state.inputs;
+    let str = JSON.stringify(sendObj);
+    console.log(str);
+    return fetch('http://localhost:3330/computation', {
         method: 'POST',
         mode: "cors",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-          {pipes: props.pipes, inputs: props.inputs}
-        )
+        body: str
       }).then(function (res) {
         console.log(res);
-
-        console.log({pipes: props.pipes, inputs: props.inputs});
+        res.json().then(chartData => {
+          console.log(chartData);
+          dispatch(loadChartDataSuccess(chartData));
+        });
       });
     } catch (e) {
+      console.log(e);
       return;
     }
 
 
-    return computeApi.computePipe(props.pipes).then(chartData => {
-      dispatch(loadChartDataSuccess(chartData));
-      console.dir(chartData); //works
-    }).catch(error => {
-      throw(error);
-    });
+    // return computeApi.computePipe(props.pipes).then(chartData => {
+    //   dispatch(loadChartDataSuccess(chartData));
+    //   console.dir(chartData); //works
+    // }).catch(error => {
+    //   throw(error);
+    // });
   };
 }

@@ -54,7 +54,13 @@ class PipesPage extends React.Component {
       this.setState({pipe: Object.assign({}, nextProps.pipe)});
 
       // set chart props
-      this.setState({chartData: Object.assign({}, nextProps.chartData)});
+      if ("nextProps.newChartData.geometry" in window) {
+        this.setState({
+        chartData: Object.assign({}, nextProps.newChartData, {geometry: nextProps.newChartData.geometry}, {pressure_profile: nextProps.newChartData.pressure_profile})
+      });}
+      
+      // let newChartData = Object.assign({}, nextProps.chartData);
+      // this.setState({chartData: newChartData});
       this.setState({inputs: Object.assign({}, nextProps.inputs)});
       console.log(this.state);
     }
@@ -107,12 +113,15 @@ class PipesPage extends React.Component {
     this.context.router.push('/pipes');
   }
 
-  onCompute(event) {
+  onCompute() {
     toastr.success(`Currently computing`);
-    this.props.actions.chartActions.loadChartData(this.props)
+    debugger;
+
+    this.props.actions.chartActions.loadChartData(this.props, this.state)
       .then(() =>{
         toastr.success(`Finished computing`);
         console.log(`this.props.chartData ${this.props.chartData}`);
+        // this.setState({chart});
         debugger;
         this.redirectToChart();
       });
@@ -128,7 +137,6 @@ class PipesPage extends React.Component {
     let {pipes} = this.props;
     const {parameters} = this.props;
     let {inputs} = this.props;
-    debugger;
     let inputParameters = Object.keys(inputs);
 
     return (

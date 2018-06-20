@@ -28,12 +28,13 @@ const inital_data = {
 
 
 class Chart extends React.Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     // add pressure_profile to data to show on load.
     const data = inital_data;
-    inital_data.datasets[0].data = this.props.chartData.pressure_profile;
+    debugger;
+    data.datasets[0].data = this.props.chartData.pressure_profile;
 
     this.state = {
       // currentDataSet: {},
@@ -64,6 +65,7 @@ class Chart extends React.Component {
 
   render() {
     let data = this.state.data;
+
     debugger;
     console.log(data);
     return (
@@ -85,7 +87,7 @@ function mapStateToProps(state) {
   debugger;
   return {
     // defined in index.js reducers
-    chartData: state.chartData[0]
+    chartData: state.chartData
   };
 }
 
